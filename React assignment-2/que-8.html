@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Chat Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 5px;
+            max-width: 75%;
+            clear: both;
+        }
+
+        .message.user {
+            background-color: #d1e7ff;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .message.bot {
+            background-color: #e6e6e6;
+            text-align: left;
+            margin-right: auto;
+        }
+
+        .typing-indicator {
+            font-style: italic;
+            color: #888;
+            margin: 5px 0;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 60px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: blue;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgb(2, 2, 225);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Real-Time Chat Application</h1>
+        <div id="chat-box"></div>
+        <input type="text" id="message" placeholder="Type your message..." autocomplete="off">
+        <button id="send-btn">Send</button>
+        <div id="typing-indicator" class="typing-indicator" style="display: none;">User is typing...</div>
+    </div>
+
+    <script src="jquery.js"></script>
+    <script>
+        let messages = []; 
+        let botResponseDelay = 1000; 
+
+        function loadMessages() {
+            $('#chat-box').empty(); 
+            messages.forEach(function(message) {
+                let messageClass = message.user === 'User' ? 'user' : 'bot';
+                $('#chat-box').append('<div class="message ' + messageClass + '"> ' + message.text + '</div>');
+            });
+            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); 
+        }
+
+        function showTypingIndicator() {
+            $('#typing-indicator').show();
+        }
+
+        function hideTypingIndicator() {
+            $('#typing-indicator').hide();
+        }
+
+        $('#message').on('input', function() {
+            showTypingIndicator();
+            clearTimeout($.data(this, 'timer'));
+            $.data(this, 'timer', setTimeout(hideTypingIndicator, 1000));
+        });
+
+        $('#send-btn').on('click', function() {
+            const messageText = $('#message').val();
+            if (messageText) {
+                messages.push({ user: 'User', text: messageText }); 
+                $('#message').val(''); 
+                hideTypingIndicator(); 
+                loadMessages(); 
+
+                setTimeout(function() {
+                    const randomResponses = ['Hello!', 'How are you?', 'What\'s up?', 'Good day!', 'Nice to meet you!'];
+                    const randomIndex = Math.floor(Math.random() * randomResponses.length);
+                    messages.push({ user: 'Bot', text: randomResponses[randomIndex] }); 
+                    loadMessages();
+                }, botResponseDelay);
+            }
+        });
+
+        $('#message').on('keypress', function(e) {
+            if (e.which == 13) { 
+                $('#send-btn').click();
+            }
+        });
+    </script>
+</body>
+</html>

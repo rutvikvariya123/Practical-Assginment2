@@ -1,0 +1,64 @@
+{
+  "cities": [
+    {
+      "city": "Mumbai",
+      "temperature": "30",
+      "description": "Partly cloudy",
+      "icon": "02d"
+    },
+    {
+      "city": "Delhi",
+      "temperature": "35",
+      "description": "Sunny",
+      "icon": "01d"
+    },
+    {
+      "city": "Bangalore",
+      "temperature": "25",
+      "description": "Light rain",
+      "icon": "10d"
+    },
+    {
+      "city": "Chennai",
+      "temperature": "32",
+      "description": "Thunderstorm",
+      "icon": "11d"
+    },
+    {
+      "city": "Kolkata",
+      "temperature": "33",
+      "description": "Haze",
+      "icon": "50d"
+    },
+    {
+      "city": "Hyderabad",
+      "temperature": "28",
+      "description": "Cloudy",
+      "icon": "03d"
+    },
+    {
+      "city": "Pune",
+      "temperature": "27",
+      "description": "Drizzle",
+      "icon": "09d"
+    },
+    {
+      "city": "Ahmedabad",
+      "temperature": "36",
+      "description": "Hot",
+      "icon": "01d"
+    },
+    {
+      "city": "Jaipur",
+      "temperature": "34",
+      "description": "Clear sky",
+      "icon": "01d"
+    },
+    {
+      "city": "Lucknow",
+      "temperature": "31",
+      "description": "Moderate rain",
+      "icon": "10d"
+    }
+  ]
+}

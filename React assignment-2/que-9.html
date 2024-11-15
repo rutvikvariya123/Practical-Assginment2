@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load More Books </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background: #fff;
+        }
+
+        #load-more {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #load-more:disabled {
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Books List</h1>
+        <div id="item-list"></div>
+        <button id="load-more">Load More</button>
+    </div>
+
+    <script src="jquery.js"></script>
+    <script>
+        $(document).ready(function() {
+            let currentPage = 0; 
+            const itemsPerPage = 3; 
+
+            function fetchItems(page) {
+                $.ajax({
+                    url: 'books.json', 
+                    dataType: 'json',
+                    success: function(data) {
+                        const books = data.books; 
+                        const start = page * itemsPerPage;
+                        const end = start + itemsPerPage;
+                        const itemsToDisplay = books.slice(start, end); 
+                        appendItems(itemsToDisplay);
+
+                        if (end >= books.length) {
+                            $('#load-more').prop('disabled', true).text('No more items to load');
+                        } else {
+                            $('#load-more').prop('disabled', false).text('Load More');
+                        }
+                    },
+                    error: function() {
+                        console.error('Failed to fetch data');
+                    }
+                });
+            }
+
+            
+            function appendItems(items) {
+                items.forEach(item => {
+                    $('#item-list').append(`
+                        <div class="item">
+                            <strong>${item.title}</strong><br>
+                            by ${item.author} (${item.year}) in ${item.language}
+                            <p>${item.country}</p>  
+                            <p>for more details : <a href="${item.link}"  target="_blank">Click here </a></p>
+                        </div>
+                    `);
+                });
+            }
+
+        
+            fetchItems(currentPage);
+
+            
+            $('#load-more').on('click', function() {
+                currentPage++;
+                fetchItems(currentPage);
+            });
+        });
+    </script>
+</body>
+</html>

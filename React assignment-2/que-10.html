@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            width: 200px;
+            margin-right: 10px;
+            font-size: 1.1em;
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            transform: scale(1.05);
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .weather {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            width: 300px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .weather h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .weather p {
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+
+        .weather img {
+            width: 80px;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Weather App</h1>
+    <form id="weatherForm">
+        <input type="text" id="cityInput" placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+    </form>
+
+    <div class="weather" id="weatherDisplay">
+    </div>
+
+    <script>
+        document.getElementById('weatherForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const city = document.getElementById('cityInput').value;
+            getWeatherData(city);
+        });
+
+        function getWeatherData(city) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'weather.json', true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    const data = JSON.parse(this.responseText).cities;
+
+                    const cityData = data.find(item => item.city.toLowerCase() === city.toLowerCase());
+
+                    if (cityData) {
+                        displayWeather(cityData);
+                    } else {
+                        alert('City not found in the data!');
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function displayWeather(data) {
+            const weatherDiv = document.getElementById('weatherDisplay');
+            weatherDiv.innerHTML = `
+        <h2>Weather in ${data.city}</h2>
+        <p>Temperature: ${data.temperature}°C</p>
+        <p>Description: ${data.description}</p>
+        <img src="http://openweathermap.org/img/wn/${data.icon}@2x.png" alt="Weather Icon">
+    `;
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <script src="jquery.js"></script>
+
+    <style>
+        body{
+            margin: 0 15%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        table{
+            font-size: 20px;
+        }
+        th{
+            background: #000;
+            color: white;
+            padding: 10px;
+        }
+
+        td{
+            background: wheat;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Book List</h1>
+    <table id="book-list">
+        <thead>
+            <tr>
+                <th>Book Title </th>
+                <th>Book Author </th>
+                <th>Book published year </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+
+    </table>
+    
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: 'books.json', 
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const tbody = $('#book-list tbody');
+                    tbody.empty(); 
+
+                    data.books.forEach(book => {
+                    tbody.append(`
+                        <tr>
+                            <td>${book.title}</td>
+                            <td>${book.author}</td>
+                            <td>${book.year}</td>
+                        </tr>
+                    `);
+                });
+                    html += '</tr>';
+                    $('#book-list').html(html);
+                },
+                error: function (err) {
+                    $('#book-list').html('<p>Error retrieving data.</p>');
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

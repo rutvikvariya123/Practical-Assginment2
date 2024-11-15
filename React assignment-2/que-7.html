@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocomplete Search with JSON Data</title>
+    <style>
+        
+        #searchInput {
+            width: 300px;
+            padding: 10px;
+            border: 2px solid #ccc;
+        }
+        #suggestions {
+            border: 1px solid #ccc;
+            border-top: none;
+            max-height: 150px;
+            overflow-y: auto;
+            width: 320px;
+            background-color: white;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Autocomplete Search</h1>
+    <input type="text" id="searchInput" placeholder="Start typing...">
+    <div id="suggestions"></div>
+
+    <script src="jquery.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            const data = [
+                { name: 'Apple' },
+                { name: 'Banana' },
+                { name: 'Cherry' },
+                { name: 'Date' },
+                { name: 'Elderberry' },
+                { name: 'Fig' },
+                { name: 'Grape' },
+                { name: 'Honeydew' }
+            ];
+
+
+            $('#searchInput').on('keyup', function () {
+                const query = $(this).val().toLowerCase();
+
+
+                const filteredData = data.filter(item => item.name.toLowerCase().includes(query));
+
+
+                $('#suggestions').empty();
+
+                if (query.length > 0 && filteredData.length > 0) {
+                    filteredData.forEach(item => {
+                        $('#suggestions').append(`<div class="suggestion-item">${item.name}</div>`);
+                    });
+                    $('#suggestions').show();
+                } else {
+                    $('#suggestions').hide();
+                }
+            });
+
+
+            $(document).on('click', '.suggestion-item', function () {
+                $('#searchInput').val($(this).text());
+                $('#suggestions').hide();
+            });
+
+
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#searchInput, #suggestions').length) {
+                    $('#suggestions').hide();
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

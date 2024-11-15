@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <script src="jquery.js"></script>
+    <style>
+        #slider img {
+            width: 200px;
+            padding: 5px;
+            object-fit: contain;
+            border: 3px solid black;
+        }
+
+         
+        h1{
+            margin-bottom: 50px;
+        }
+        .btn {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+        button {
+            padding: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            background: blue;
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Image Slide</h1>
+    <div id="slider">
+        <img src="img/images1.jpg" alt="Image 1">
+        <img src="img/images2.jpg"Image 2" style="display: none;">
+        <img src="img/images3.jpg" alt="Image 3" style="display: none;">
+    </div>
+    <br>
+    <div class="btn">
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+    </div>
+    <script>
+        $(document).ready(function () {
+            let current = 0;
+            let images = $('#slider img');
+            let total = images.length;
+
+            $('#next').click(function () {
+                images.eq(current).hide();
+                current = (current + 1) % total;
+                images.eq(current).show();
+            });
+
+            $('#prev').click(function () {
+                images.eq(current).hide();
+                current = (current - 1 + total) % total;
+                images.eq(current).show();
+            });
+        });
+    </script>
+
+</body>
+
+</html>
